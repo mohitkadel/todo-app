@@ -8,7 +8,7 @@ import { TodoService } from './todo.service';
 })
 export class HomeComponent implements OnInit {
 
-	todo: any;
+	title: any;
 
 	todos: any;
 
@@ -19,9 +19,9 @@ export class HomeComponent implements OnInit {
 	}
 
 	addTodo() {
-		if (this.todo) {
-			this.todoService.createTodo(this.todo).subscribe((todo) => {
-				this.todo = ""
+		if (this.title) {
+			this.todoService.createTodo(this.title).subscribe((todo) => {
+				this.title = ""
 				this.getAllTodo();
 			})
 		}
@@ -34,20 +34,20 @@ export class HomeComponent implements OnInit {
 	}
 
 	onStatusChange(todo) {
-		if(todo.status == 'Completed') {
-			todo.status = 'Active'
+		if(todo.completed) {
+			todo.completed = false
 		}
 		else {
-			todo.status = 'Completed'
+			todo.completed = true
 		}
 
-		this.todoService.updateTodo(todo._id, { status: todo.status }).subscribe((todo) => {
+		this.todoService.updateTodo(todo._id, { completed: todo.completed }).subscribe((todo) => {
 			this.getAllTodo();
 		});
 	}
 
 	updateTodo(item: any) {
-		this.todoService.updateTodo(item._id, { todo: item.todo }).subscribe((todo) => {
+		this.todoService.updateTodo(item._id, { title: item.title }).subscribe((todo) => {
 			this.getAllTodo();
 		});
 	}

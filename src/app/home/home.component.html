@@ -1,6 +1,6 @@
 <div class="row py-5">
 	<div class="col-md-10">
-		<input type="text" name="todo" [(ngModel)]="todo" class="form-control" />	
+		<input type="text" name="title" [(ngModel)]="title" class="form-control" />	
 	</div>
 	<div class="col-md-2">
 		<button class="btn btn-primary" (click)="addTodo()">Add</button>
@@ -20,17 +20,17 @@
 		<tbody>
 			<tr *ngFor="let item of todos">
 				<td>
-					<input type="checkbox" name="status" class="form-control" [checked]="item.status=='Completed'" (change)="onStatusChange(item)"/>
+					<input type="checkbox" name="status" class="form-control" [checked]="item.completed" (change)="onStatusChange(item)"/>
 				</td>
-				<td class="completed" *ngIf="item.status=='Completed'">{{item.todo}}</td>
-				<td *ngIf="item.status!='Completed'" (dblclick)="item.editing = true">
+				<td class="completed" *ngIf="item.completed">{{item.title}}</td>
+				<td *ngIf="!item.completed" (dblclick)="item.editing = true">
 					
-					<span *ngIf="!item.editing">{{item.todo}}</span>
+					<span *ngIf="!item.editing">{{item.title}}</span>
 					<form *ngIf="item.editing" (ngSubmit)="updateTodo(item)">
-						<input type="text" name="todo" [(ngModel)]="item.todo" class="form-control" (blur)="item.editing = false" />
+						<input type="text" name="title" [(ngModel)]="item.title" class="form-control" (blur)="item.editing = false" />
 					</form>
 				</td>
-				<td>{{item.status}}</td>
+				<td>{{item.completed?'Completed':'Active'}}</td>
 				<td><a href="javascript:void(0)" (click)="remove(item._id)" title="Remove"><i class="fa fa-remove"></i></a></td>
 			</tr>
 		</tbody>

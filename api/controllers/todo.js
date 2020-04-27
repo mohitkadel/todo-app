@@ -13,16 +13,16 @@ let validate = function (method) {
 		case 'createTodo':
 			{
 				return [
-					check('todo').exists()
+					check('title').exists()
 				]
 			}
 		case 'modifyTodo':
 			{
 				return [
 					// check('todo').exists(),
-					check('status').custom(value => {
-						if (value && (value != "Active" && value != "Completed")) {
-							return Promise.reject('Invalid status')
+					check('completed').custom(value => {
+						if (value && (value != true && value != false)) {
+							return Promise.reject('Invalid completed status')
 						}
 						return true;
 					}),
@@ -40,10 +40,11 @@ let validate = function (method) {
 let getAllTodo = function (req, res) {
 	let query = {};
 
-	Todo.find(query).then((Todos) => {
-			res.status(200).send(Todos);
+	Todo.find(query).then((todos) => {
+			res.status(200).send(response(todos));
 		})
 		.catch((error) => {
+			console.log(error)
 			res.status(400).send(error);
 		})
 };
@@ -55,8 +56,8 @@ let getAllTodo = function (req, res) {
  * @return {[type]}     [description]
  */
 let getTodo = function (req, res) {
-	Todo.findById(req.params.id).then((Todo) => {
-			res.status(200).send(Todo);
+	Todo.findById(req.params.id).then((todo) => {
+			res.status(200).send(response(todo));
 		})
 		.catch((error) => {
 			res.status(404).send(error);
@@ -76,13 +77,13 @@ let modifyTodo = function (req, res) {
 		res.status(422).json({ errors: errors.array() });
 		return;
 	}
-
 	Todo.findById(req.params.id).then((todo) => {
-			todo.status = req.body.status || todo.status;
-			todo.todo = req.body.todo || todo.todo;
+			todo.completed = req.body.completed;
+			todo.title = req.body.title || todo.title;
+			todo.order = req.body.order || todo.order;
 			todo.save();
 
-			res.status(200).send(todo);
+			res.status(200).send(response(todo));
 		})
 		.catch((error) => {
 			console.log(error)
@@ -105,8 +106,8 @@ let createTodo = function (req, res) {
 
 	let todo = new Todo(req.body);
 
-	todo.save(todo).then(() => {
-			res.status(201).send(todo);
+	todo.save(todo).then((todo) => {
+			res.status(201).send(response(todo));
 		})
 		.catch((error) => {
 			console.log(error)
@@ -121,19 +122,45 @@ let createTodo = function (req, res) {
  * @return {[type]}     [description]
  */
 let deleteTodo = function (req, res) {
+	if (!req.params.id) {
+		// Delete all records
+		Todo.deleteMany({}).then((todo) => {
+				res.status(200).send([]);
+			})
+			.catch((error) => {
+				console.log(error)
+				res.status(400).send({ message: "Something went wrong" });
+			})
+	} else {
+		Todo.findByIdAndRemove(req.params.id).then((todo) => {
+				if (!todo) {
+					return res.status(404).send({ message: "Todo not found with id " + req.body.id });
+				}
 
-	Todo.findByIdAndRemove(req.params.id).then((todo) => {
-			if (!todo) {
-				return res.status(404).send({ message: "Todo not found with id " + req.params.id });
-			}
-
-			res.status(204).send({ message: "Todo deleted successfully!" });
-		})
-		.catch((error) => {
-			console.log(error)
-			res.status(404).send({ message: "Todo not found" });
-		})
+				res.status(200).send(todo);
+			})
+			.catch((error) => {
+				console.log(error)
+				res.status(404).send({ message: "Todo not found" });
+			})
+	}
 };
+
+function response(data) {
+	var response = data;
+	if (Array.isArray(response)) {
+		response = JSON.parse(JSON.stringify(data))
+
+		response.map((todo) => {
+			todo.url = process.env.API_URL + "/todos/" + todo._id
+			return todo;
+		})
+	} else {
+		response = data.toJSON()
+		response.url = process.env.API_URL + "/todos/" + response._id
+	}
+	return response;
+}
 
 module.exports = {
 	createTodo: createTodo,

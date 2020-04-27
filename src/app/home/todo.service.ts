@@ -8,8 +8,8 @@ export class TodoService {
 
 	constructor(private http: HttpClient) {}
 
-	createTodo(todo) {
-		return this.http.post('/todos', { todo: todo });
+	createTodo(title) {
+		return this.http.post('/todos', { title: title });
 	}
 
 	getAllTodo() {

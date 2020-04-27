@@ -2,8 +2,9 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const router = express.Router();
-const port = process.env.PORT || 8080;
 const mongoose = require('mongoose');
+const dotenv = require('dotenv').config();
+const port = process.env.PORT || 8080;
 mongoose.connect('mongodb://localhost/todo', { useNewUrlParser: true });
 mongoose.set('useFindAndModify', false);
 var db = mongoose.connection;
@@ -19,7 +20,7 @@ const routes = require('./api/routes');
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTION, DELETE");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, OPTION, DELETE");
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Headers", "Origin, x-access-token, X-Requested-With, Content-Type, Accept");
   next();
