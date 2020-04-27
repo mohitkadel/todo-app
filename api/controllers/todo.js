@@ -20,7 +20,7 @@ let validate = function (method) {
 			{
 				return [
 					// check('todo').exists(),
-					check('status').exists().custom(value => {
+					check('status').custom(value => {
 						if (value && (value != "Active" && value != "Completed")) {
 							return Promise.reject('Invalid status')
 						}
@@ -78,7 +78,8 @@ let modifyTodo = function (req, res) {
 	}
 
 	Todo.findById(req.params.id).then((todo) => {
-			todo.status = req.body.status;
+			todo.status = req.body.status || todo.status;
+			todo.todo = req.body.todo || todo.todo;
 			todo.save();
 
 			res.status(200).send(todo);
