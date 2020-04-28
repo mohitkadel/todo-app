@@ -40,6 +40,11 @@ let validate = function (method) {
 let getAllTodo = function (req, res) {
 	let query = {};
 
+	// Only logged in user's todo to show
+	if(req.id) {
+		query.created_by = req.id;
+	}
+
 	Todo.find(query).then((todos) => {
 			res.status(200).send(response(todos));
 		})
@@ -81,6 +86,7 @@ let modifyTodo = function (req, res) {
 			todo.completed = req.body.completed;
 			todo.title = req.body.title || todo.title;
 			todo.order = req.body.order || todo.order;
+			todo.updated_by = req.id // Updated by user id
 			todo.save();
 
 			res.status(200).send(response(todo));
@@ -105,7 +111,8 @@ let createTodo = function (req, res) {
 	}
 
 	let todo = new Todo(req.body);
-
+	todo.created_by = req.id // Created by user id
+	
 	todo.save(todo).then((todo) => {
 			res.status(201).send(response(todo));
 		})

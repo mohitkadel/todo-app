@@ -1,6 +1,12 @@
 <div class="container">
   <div class="py-5 text-center">
     <h2>TODO</h2>
+    <div>
+      <span class="text-muted" *ngIf="user">Welcome {{user.name}}!</span>
+      <div *ngIf="user">
+        <a href="javascript:void(0)" (click)="logout()">Logout</a>
+      </div>
+    </div>
   </div>
   <router-outlet></router-outlet>
 </div>
