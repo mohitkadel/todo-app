@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { TodoService } from './todo.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { TodoService } from '../todo/todo.service';
 
 @Component({
 	selector: 'app-home',
@@ -9,52 +9,18 @@ import { TodoService } from './todo.service';
 export class HomeComponent implements OnInit {
 
 	title: any;
-
-	todos: any;
+	refresh: boolean = false;
 
 	constructor(private todoService: TodoService) {}
 
-	ngOnInit() {
-		this.getAllTodo();
-	}
+	ngOnInit() {}
 
 	addTodo() {
 		if (this.title) {
 			this.todoService.createTodo(this.title).subscribe((todo) => {
 				this.title = ""
-				this.getAllTodo();
+				this.refresh = true;
 			})
 		}
-	}
-
-	getAllTodo() {
-		this.todoService.getAllTodo().subscribe((todos) => {
-			this.todos = todos;
-		})
-	}
-
-	onStatusChange(todo) {
-		if(todo.completed) {
-			todo.completed = false
-		}
-		else {
-			todo.completed = true
-		}
-
-		this.todoService.updateTodo(todo._id, { completed: todo.completed }).subscribe((todo) => {
-			this.getAllTodo();
-		});
-	}
-
-	updateTodo(item: any) {
-		this.todoService.updateTodo(item._id, { title: item.title }).subscribe((todo) => {
-			this.getAllTodo();
-		});
-	}
-
-	remove(id) {
-		this.todoService.removeTodo(id).subscribe(() => {
-			this.getAllTodo();
-		});
 	}
 }

@@ -1,9 +1,13 @@
 <div class="container">
   <div class="py-5 text-center">
     <h2>TODO</h2>
-    <div>
-      <span class="text-muted" *ngIf="user">Welcome {{user.name}}!</span>
-      <div *ngIf="user">
+    <div *ngIf="user">
+      <span class="text-muted">Welcome {{user.name}}!</span>
+      <div>
+        <span *ngIf="user.role==1"> 
+          <a href="/">Home</a> | 
+          <a href="/users">Users</a> | 
+        </span>
         <a href="javascript:void(0)" (click)="logout()">Logout</a>
       </div>
     </div>

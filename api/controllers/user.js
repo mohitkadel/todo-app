@@ -94,7 +94,7 @@ let signupUser = function(req, res) {
 
 			const options = { expiresIn: '2d', issuer: 'http://localhost' };
 			const secret = "mohitkadel";
-			const payload = { id: user._id };
+			const payload = { id: user._id, role: user.role };
 
 			const token = jwt.sign(payload, secret, options);
 
@@ -135,7 +135,7 @@ let postLogin = function(req, res) {
 
 			const options = { expiresIn: '2d', issuer: 'http://localhost' };
 			const secret = "mohitkadel";
-			const payload = { id: user._id };
+			const payload = { id: user._id, role: user.role };
 
 			const token = jwt.sign(payload, secret, options);
 

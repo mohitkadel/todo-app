@@ -1,0 +1,33 @@
+<div class="row px-3">
+	<div class="logo mb-3">
+		<div class="col-md-12 text-center">
+			<h3>Todos</h3>
+		</div>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Todo</th>
+				<th>Status</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let item of todos">
+				<td>
+					<input type="checkbox" name="status" class="form-control" [checked]="item.completed" (change)="onStatusChange(item)" />
+				</td>
+				<td class="completed" *ngIf="item.completed">{{item.title}}</td>
+				<td *ngIf="!item.completed" (dblclick)="item.editing = true">
+					<span *ngIf="!item.editing">{{item.title}}</span>
+					<form *ngIf="item.editing" (ngSubmit)="updateTodo(item)">
+						<input type="text" name="title" [(ngModel)]="item.title" class="form-control" (blur)="item.editing = false" />
+					</form>
+				</td>
+				<td>{{item.completed?'Completed':'Active'}}</td>
+				<td><a href="javascript:void(0)" (click)="remove(item._id)" title="Remove"><i class="fa fa-remove"></i></a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

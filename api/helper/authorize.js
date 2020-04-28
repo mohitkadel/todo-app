@@ -17,6 +17,7 @@ let authorize = () => {
 
                 // if everything good, save to request for use in other routes
                 req.id = decoded.id;
+                req.role = decoded.role;
                 next();
             })
         }

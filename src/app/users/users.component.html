@@ -1,0 +1,53 @@
+<div class="row px-3">
+	<div class="logo mb-3">
+		<div class="col-md-12 text-center">
+			<h3>Users</h3>
+		</div>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Status</th>
+				<th>Created At</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let user of users">
+				<td>{{user.name}}</td>
+				<td>{{user.email}}</td>
+				<td>{{user.status}}</td>
+				<td>{{user.created_at | date:'medium'}}</td>
+				<td>
+					<!-- <a href="javascript:void(0)" title="Remove">
+						<i class="fa fa-remove"></i>
+					</a> &nbsp; -->
+					<a href="javascript:void(0)" title="View Todos" data-toggle="modal" data-target="#todoModal" (click)="selectedUserId = user.id">
+						<i class="fa fa-eye"></i>
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="todoModal" tabindex="-1" role="dialog" aria-labelledby="todoModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Todos</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<app-todo [userId]="selectedUserId"></app-todo>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>

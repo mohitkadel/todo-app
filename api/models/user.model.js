@@ -14,6 +14,10 @@ var userSchema = mongoose.Schema({
         maxlength: 1024,
         trim: true
     },
+    role: {
+        type: Number, // 1: Admin, 2: User
+        default: 2
+    },
     name: String,
     status: {
         type: Boolean,

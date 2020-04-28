@@ -12,8 +12,8 @@ export class TodoService {
 		return this.http.post('/todos', { title: title });
 	}
 
-	getAllTodo() {
-		return this.http.get('/todos');
+	getAllTodo(query) {
+		return this.http.get('/todos', { params: query });
 	}
 
 	updateTodo(id, body) {

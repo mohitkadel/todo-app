@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-import { User } from './user.model';
+import { User } from './users/user.model';
 
 
 class LoginResponse {

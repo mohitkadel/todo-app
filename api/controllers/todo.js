@@ -2,6 +2,10 @@ const Todo = require('../models/todo.model');
 const { check, body, validationResult } = require('express-validator')
 const _ = require('lodash');
 const path = require('path');
+const Role = {
+	Admin: 1,
+	User: 2
+}
 
 /**
  * Validations
@@ -41,8 +45,11 @@ let getAllTodo = function (req, res) {
 	let query = {};
 
 	// Only logged in user's todo to show
-	if(req.id) {
+	if (req.id && req.role != Role.Admin) {
 		query.created_by = req.id;
+	}
+	else if(req.role == Role.Admin) {
+		query = req.query;
 	}
 
 	Todo.find(query).then((todos) => {
@@ -112,7 +119,7 @@ let createTodo = function (req, res) {
 
 	let todo = new Todo(req.body);
 	todo.created_by = req.id // Created by user id
-	
+
 	todo.save(todo).then((todo) => {
 			res.status(201).send(response(todo));
 		})
