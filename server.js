@@ -5,6 +5,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
 const port = process.env.PORT || 8080;
+
 mongoose.connect('mongodb://localhost/todo', { useNewUrlParser: true });
 mongoose.set('useFindAndModify', false);
 var db = mongoose.connection;

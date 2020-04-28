@@ -7,20 +7,26 @@ import { AuthInterceptor } from './auth.interceptor';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
-	{ path: '', component: HomeComponent }
+	{ path: '', component: HomeComponent },
+	{ path: 'login', component: LoginComponent },
+	{ path: 'signup', component: SignupComponent }
 ];
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		HomeComponent
+		HomeComponent,
+		LoginComponent,
+		SignupComponent
 	],
 	imports: [
 		BrowserModule,
 		FormsModule,
-		// ReactiveFormsModule,
+		ReactiveFormsModule,
 		HttpClientModule,
 		RouterModule.forRoot(routes)
 	],
